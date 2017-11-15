@@ -6,7 +6,7 @@
   in real applications.
 */
 
-EventItem::EventItem() : color(qrand() % 256, qrand() % 256, qrand() % 256) {
+EventItem::EventItem() : color(255, 255, 255) {
   setToolTip("This could be an event");
   setCursor(Qt::OpenHandCursor);
   setAcceptedMouseButtons(Qt::LeftButton);
@@ -51,6 +51,7 @@ void EventItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)  {
   QPointF newPos = event->scenePos();
   newPos.setX(oldX);
   this->setPos(newPos);
+
   update();
   //  QGraphicsItem::itemChange(ItemPositionChange, newPos);
   //this->itemChange(ItemPositionChange, value.toPointF().
@@ -60,3 +61,4 @@ void EventItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)  {
 void EventItem::setOriginalPos(qreal x, qreal y) {
   originalPos = QPointF(x, y);
 }
+

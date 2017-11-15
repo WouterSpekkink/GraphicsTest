@@ -26,6 +26,7 @@ protected:
 private:
   QColor color;
   QPointF originalPos;
+
 };
 
 #endif
