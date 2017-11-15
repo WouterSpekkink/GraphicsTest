@@ -6,7 +6,9 @@
   in real applications.
 */
 
-EventItem::EventItem() : color(255, 255, 255) {
+EventItem::EventItem(int subWidth) : color(255, 255, 255) {
+  width = subWidth;
+
   setToolTip("This could be an event");
   setCursor(Qt::OpenHandCursor);
   setAcceptedMouseButtons(Qt::LeftButton);
@@ -22,18 +24,21 @@ EventItem::EventItem() : color(255, 255, 255) {
 */
 
 QRectF EventItem::boundingRect() const {
-  return QRectF(-15.5, -15.5, 34, 34);
+  return QRectF(-15.5, -15.5, width + 4, 34);
 }
 
 void EventItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option);
   Q_UNUSED(widget);
+
   painter->setPen(Qt::NoPen);
   painter->setBrush(Qt::darkGray);
-  painter->drawEllipse(-12, -12, 30, 30);
+  //  painter->drawEllipse(-12, -12, 30, 30);
+  painter->drawEllipse(-12, -12, width, 30);
   painter->setPen(QPen(Qt::black, 1));
   painter->setBrush(QBrush(color));
-  painter->drawEllipse(-15, -15, 30, 30);
+  //  painter->drawEllipse(-15, -15, 30, 30);
+  painter->drawEllipse(-15, -15, width, 30);
 }
 
 // Only to set the cursor to a different graphic.
@@ -61,4 +66,9 @@ void EventItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)  {
 void EventItem::setOriginalPos(qreal x, qreal y) {
   originalPos = QPointF(x, y);
 }
+
+int EventItem::getCorrection() {
+  return width - 29;
+}
+
 

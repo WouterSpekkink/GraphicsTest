@@ -12,11 +12,12 @@
 class EventItem : public QGraphicsItem {
 
 public:
-  EventItem();
+  EventItem(int subWidth);
 
   QRectF boundingRect() const override;
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
   void setOriginalPos(qreal x, qreal y);
+  int getCorrection();
   
 protected:
   void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -26,7 +27,7 @@ protected:
 private:
   QColor color;
   QPointF originalPos;
-
+  int width;
 };
 
 #endif

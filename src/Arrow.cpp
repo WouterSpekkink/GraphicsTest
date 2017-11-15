@@ -45,7 +45,15 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
   painter->setPen(myPen);
   painter->setBrush(color);
 
-  QLineF newLine = QLineF(start->pos(), end->pos());
+  QLineF newLine = QLineF();
+  
+  if (start->pos().x() < end->pos().x()) {
+    QPointF correction = QPointF(start->getCorrection(), 0);
+    newLine = QLineF(start->pos() + correction, end->pos());
+  } else {
+    QPointF correction = QPointF(end->getCorrection(), 0);
+    newLine = QLineF(start->pos(), end->pos() + correction);
+  }
   newLine.setLength(newLine.length() - 18);
   setLine(newLine);
   
