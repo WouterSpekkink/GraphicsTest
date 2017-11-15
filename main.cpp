@@ -33,13 +33,11 @@ int main(int argc, char **argv) {
   itemTwo->setOriginalPos(horPos, 100);
   scene.addItem(itemTwo);
 
-  QPointF start = itemOne->scenePos();
-  QPointF end = itemTwo->scenePos();
-  
   Arrow *line = new Arrow(itemOne, itemTwo);
 
   scene.addItem(line);
-  
+  itemTwo->setZValue(2);
+  itemOne->setZValue(1);
   /* 
      So the graphics view seems to be an object that provides a viewport.
   */
