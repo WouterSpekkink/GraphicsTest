@@ -45,21 +45,31 @@ void EventItem::mousePressEvent(QGraphicsSceneMouseEvent *) {
 }
 
 void EventItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  qreal oldX = originalPos.x();
-  QPointF newPos = event->scenePos();
-  newPos.setX(oldX);
-  this->setPos(newPos);
-
-  //QGraphicsItem::mouseMoveEvent(event);
-  setCursor(Qt::OpenHandCursor);
+  if (event->modifiers() & Qt::AltModifier) {
+    QPointF newPos = event->scenePos();
+    this->setPos(newPos);
+    setCursor(Qt::OpenHandCursor);
+  } else {
+    qreal oldX = originalPos.x();
+    QPointF newPos = event->scenePos();
+    
+    newPos.setX(oldX);
+    this->setPos(newPos);
+    setCursor(Qt::OpenHandCursor);
+  }
 }
 
 void EventItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)  {
-  qreal oldX = originalPos.x();
-  QPointF newPos = event->scenePos();
-  newPos.setX(oldX);
-  this->setPos(newPos);
-
+  if (event->modifiers() & Qt::AltModifier) {
+    QPointF newPos = event->scenePos();
+    this->setPos(newPos);
+    setCursor(Qt::OpenHandCursor);
+  } else {
+    qreal oldX = originalPos.x();
+    QPointF newPos = event->scenePos();
+    newPos.setX(oldX);
+    this->setPos(newPos);
+  }
   update();
   QGraphicsItem::mouseReleaseEvent(event);
 }

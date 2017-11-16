@@ -49,6 +49,12 @@ int main(int argc, char **argv) {
   itemSix->setOriginalPos(horPos, 0);
   scene.addItem(itemSix);
 
+  EventItem *itemSeven = new EventItem(30);
+  horPos = 5 * 35;
+  itemSeven->setPos(horPos, 100);
+  itemSeven->setOriginalPos(horPos, 0);
+  scene.addItem(itemSeven);
+  
   
   //  Arrow *line = new Arrow(itemOne, itemTwo);
   //Arrow *line2 = new Arrow(itemTwo, itemThree);
@@ -59,13 +65,16 @@ int main(int argc, char **argv) {
   Arrow *line3 = new Arrow(itemFour, itemFive);
   Arrow *line4 = new Arrow(itemFive, itemSix);
 
+  Arrow *line5 = new Arrow(itemSeven, itemOne);
   
   scene.addItem(line);
   scene.addItem(line2);
 
   scene.addItem(line3);
   scene.addItem(line4);
-    
+
+  scene.addItem(line5);
+  
   itemOne->setZValue(1);
   itemTwo->setZValue(1);
   itemThree->setZValue(1);
@@ -73,6 +82,8 @@ int main(int argc, char **argv) {
   itemFive->setZValue(1);
   itemSix->setZValue(1);
 
+  itemSeven->setZValue(1);
+  
   scene.update();
   
   /* 
