@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
   scene.addItem(itemFive);
 
   EventItem *itemSix = new EventItem(30);
-  horPos = 300 * 35;
+  horPos = 30 * 35;
   itemSix->setPos(horPos, 400);
   itemSix->setOriginalPos(horPos, 0);
   scene.addItem(itemSix);
