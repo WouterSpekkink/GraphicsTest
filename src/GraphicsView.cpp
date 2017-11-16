@@ -43,11 +43,17 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void GraphicsView::wheelEvent(QWheelEvent* event) {
-  this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-  double scaleFactor = 1.15;
-  if (event->delta() > 0) {
-    this->scale(scaleFactor, scaleFactor);
+  if (event->modifiers() & Qt::ControlModifier) {
+    this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    double scaleFactor = 1.15;
+    if (event->delta() > 0) {
+      this->scale(scaleFactor, scaleFactor);
+    } else {
+      this->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    }
+  } else if (event->modifiers() & Qt::ShiftModifier) {
+    horizontalScrollBar()->setValue(horizontalScrollBar()->value() - event->delta());
   } else {
-    this->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    QGraphicsView::wheelEvent(event);
   }
 }
