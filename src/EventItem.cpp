@@ -33,11 +33,9 @@ void EventItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
   painter->setPen(Qt::NoPen);
   painter->setBrush(Qt::darkGray);
-  //  painter->drawEllipse(-12, -12, 30, 30);
   painter->drawEllipse(-12, -12, width, 30);
   painter->setPen(QPen(Qt::black, 1));
   painter->setBrush(QBrush(color));
-  //  painter->drawEllipse(-15, -15, 30, 30);
   painter->drawEllipse(-15, -15, width, 30);
 }
 
@@ -47,7 +45,12 @@ void EventItem::mousePressEvent(QGraphicsSceneMouseEvent *) {
 }
 
 void EventItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  QGraphicsItem::mouseMoveEvent(event);
+  qreal oldX = originalPos.x();
+  QPointF newPos = event->scenePos();
+  newPos.setX(oldX);
+  this->setPos(newPos);
+
+  //QGraphicsItem::mouseMoveEvent(event);
   setCursor(Qt::OpenHandCursor);
 }
 
@@ -58,8 +61,6 @@ void EventItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)  {
   this->setPos(newPos);
 
   update();
-  //  QGraphicsItem::itemChange(ItemPositionChange, newPos);
-  //this->itemChange(ItemPositionChange, value.toPointF().
   QGraphicsItem::mouseReleaseEvent(event);
 }
 

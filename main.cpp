@@ -11,41 +11,41 @@ int main(int argc, char **argv) {
   /*
     I believe that the graphics scene provides all information on what needs to be drawn.
   */
-  QGraphicsScene scene(-100, -100, 600, 400);
+  QGraphicsScene scene(0);
 
   EventItem *itemOne = new EventItem(100);
   int horPos = 1 * 35;
-  itemOne->setPos(horPos, 100);
+  itemOne->setPos(horPos, 200);
   itemOne->setOriginalPos(horPos, 100);
   scene.addItem(itemOne);
 
   EventItem *itemTwo = new EventItem(300);
   horPos = 5 * 35;
-  itemTwo->setPos(horPos, 100);
+  itemTwo->setPos(horPos, 200);
   itemTwo->setOriginalPos(horPos, 100);
   scene.addItem(itemTwo);
 
   EventItem *itemThree = new EventItem(30);
   horPos = 30 * 35;
-  itemThree->setPos(horPos, 100);
+  itemThree->setPos(horPos, 200);
   itemThree->setOriginalPos(horPos, 100);
   scene.addItem(itemThree);
 
   EventItem *itemFour = new EventItem(100);
   horPos = 1 * 35;
-  itemFour->setPos(horPos, 0);
+  itemFour->setPos(horPos, 400);
   itemFour->setOriginalPos(horPos, 0);
   scene.addItem(itemFour);
 
   EventItem *itemFive = new EventItem(300);
   horPos = 5 * 35;
-  itemFive->setPos(horPos, 0);
+  itemFive->setPos(horPos, 400);
   itemFive->setOriginalPos(horPos, 0);
   scene.addItem(itemFive);
 
   EventItem *itemSix = new EventItem(30);
-  horPos = 30 * 35;
-  itemSix->setPos(horPos, 0);
+  horPos = 300 * 35;
+  itemSix->setPos(horPos, 400);
   itemSix->setOriginalPos(horPos, 0);
   scene.addItem(itemSix);
 
@@ -73,6 +73,8 @@ int main(int argc, char **argv) {
   itemFive->setZValue(1);
   itemSix->setZValue(1);
 
+  scene.update();
+  
   /* 
      So the graphics view seems to be an object that provides a viewport.
   */

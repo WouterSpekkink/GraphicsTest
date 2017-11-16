@@ -50,10 +50,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		src/Arrow.cpp \
-		src/EventItem.cpp 
+		src/EventItem.cpp \
+		src/GraphicsView.cpp 
 OBJECTS       = main.o \
 		Arrow.o \
-		EventItem.o
+		EventItem.o \
+		GraphicsView.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -115,7 +117,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		include/EventItem.h \
 		include/GraphicsView.h main.cpp \
 		src/Arrow.cpp \
-		src/EventItem.cpp
+		src/EventItem.cpp \
+		src/GraphicsView.cpp
 QMAKE_TARGET  = GraphicsTest
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = GraphicsTest
@@ -284,7 +287,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents include/Arrow.h include/EventItem.h include/GraphicsView.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp src/Arrow.cpp src/EventItem.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp src/Arrow.cpp src/EventItem.cpp src/GraphicsView.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -334,6 +337,9 @@ Arrow.o: src/Arrow.cpp include/Arrow.h \
 
 EventItem.o: src/EventItem.cpp include/EventItem.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o EventItem.o src/EventItem.cpp
+
+GraphicsView.o: src/GraphicsView.cpp include/GraphicsView.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GraphicsView.o src/GraphicsView.cpp
 
 ####### Install
 
