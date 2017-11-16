@@ -1,6 +1,12 @@
 #include "../include/GraphicsView.h"
 
+#define VIEW_CENTER viewport()->rect().center()
+#define VIEW_WIDTH viewport()->rect().width()
+#define VIEW_HEIGHT viewport()->rect().height()
+
 GraphicsView::GraphicsView(QGraphicsScene *scene) : QGraphicsView(scene) {
+  panSpeed = 4;
+  scaleFact = 1;
 }
 
 void GraphicsView::resizeEvent(QResizeEvent *) {};
@@ -8,10 +14,8 @@ void GraphicsView::resizeEvent(QResizeEvent *) {};
 void GraphicsView::mousePressEvent(QMouseEvent *event) {
   if (event->button() == Qt::RightButton) {
     pan = true;
-    panStartX = event->x();
-    panStartY = event->y();
     setCursor(Qt::ClosedHandCursor);
-    event->accept();
+    lastMousePos = event->pos();
     return;
   } else {
     QGraphicsView::mousePressEvent(event);
@@ -22,7 +26,8 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
   if (event->button() == Qt::RightButton) {
     pan = false;
     setCursor(Qt::ArrowCursor);
-    event->accept();
+    lastMousePos = event->pos();
+
     return;
   } else {
     QGraphicsView::mouseReleaseEvent(event);
@@ -31,13 +36,32 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
 
 void GraphicsView::mouseMoveEvent(QMouseEvent *event) {
   if (pan) {
-    horizontalScrollBar()->setValue(horizontalScrollBar()->value() - (event->x() - panStartX));
-    verticalScrollBar()->setValue(verticalScrollBar()->value() - (event->y() - panStartY));
-    panStartX = event->x();
-    panStartY = event->y();
-    event->accept();
+    QPointF mouseDelta = mapToScene(event->pos()) - mapToScene(lastMousePos);
+    
+    mouseDelta *= scaleFact;
+    mouseDelta *= panSpeed;
+    
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    QPoint newCenter(VIEW_WIDTH / 2 - mouseDelta.x(),  VIEW_HEIGHT / 2 - mouseDelta.y());
+    centerOn(mapToScene(newCenter));
+    lastMousePos = event->pos();
+    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    QRectF currentRect = this->scene()->itemsBoundingRect();
+    currentRect.setX(currentRect.x() - 50);
+    currentRect.setY(currentRect.y() - 50);
+    currentRect.setWidth(currentRect.width() + 100);
+    currentRect.setHeight(currentRect.height() + 100);
+
+    this->scene()->setSceneRect(currentRect);
+    update();
     return;
   } else {
+    QRectF currentRect = this->scene()->itemsBoundingRect();
+    currentRect.setX(currentRect.x() - 50);
+    currentRect.setY(currentRect.y() - 50);
+    currentRect.setWidth(currentRect.width() + 100);
+    currentRect.setHeight(currentRect.height() + 100);
+    this->scene()->setSceneRect(currentRect);
     QGraphicsView::mouseMoveEvent(event);
   }
 }

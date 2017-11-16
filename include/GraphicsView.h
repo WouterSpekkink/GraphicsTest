@@ -10,7 +10,8 @@ class GraphicsView : public QGraphicsView {
   
 public:
   GraphicsView(QGraphicsScene *scene);
-
+  qreal panSpeed;
+  
 protected:
   void resizeEvent(QResizeEvent *) override;
   void mousePressEvent(QMouseEvent *event);
@@ -20,9 +21,9 @@ protected:
 
 private:
   bool pan;
-  int panStartX;
-  int panStartY;
-
+  qreal scaleFact;
+  QPoint lastMousePos;  
+  
 };
 
 

@@ -83,12 +83,17 @@ int main(int argc, char **argv) {
   itemSix->setZValue(1);
 
   itemSeven->setZValue(1);
-  
-  scene.update();
+  QRectF currentRect = scene.itemsBoundingRect();
+  currentRect.setX(currentRect.x() - 50);
+  currentRect.setY(currentRect.y() - 50);
+  currentRect.setWidth(currentRect.width() + 100);
+  currentRect.setHeight(currentRect.height() + 100);
+  scene.setSceneRect(currentRect);
   
   /* 
      So the graphics view seems to be an object that provides a viewport.
   */
+
   GraphicsView view(&scene);
   view.setBackgroundBrush(QColor(230, 200, 167)); // Sets the background colour.
   view.setRenderHint(QPainter::Antialiasing);

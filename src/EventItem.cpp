@@ -32,8 +32,6 @@ void EventItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
   Q_UNUSED(widget);
 
   painter->setPen(Qt::NoPen);
-  painter->setBrush(Qt::darkGray);
-  painter->drawEllipse(-12, -12, width, 30);
   painter->setPen(QPen(Qt::black, 1));
   painter->setBrush(QBrush(color));
   painter->drawEllipse(-15, -15, width, 30);
