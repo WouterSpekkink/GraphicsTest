@@ -3,6 +3,7 @@
 
 #include <QPen>
 #include <QPainter>
+#include <QtCore>
 
 const qreal Pi = 3.14;
 
@@ -16,7 +17,7 @@ Arrow::Arrow(EventItem *startItem, EventItem *endItem, QGraphicsItem *parent)
 }
 
 QRectF Arrow::boundingRect() const {
-  qreal extra = (pen().width() + 20) / 2.0;
+  qreal extra = (pen().width() + 40) / 2.0;
   
   return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
 				    line().p2().y() - line().p1().y()))
@@ -41,19 +42,12 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
 
   QPen myPen = pen();
   myPen.setColor(color);
-  qreal arrowSize = 10;
   painter->setPen(myPen);
   painter->setBrush(color);
 
   QLineF newLine = QLineF();
   
-  if (start->pos().x() < end->pos().x()) {
-    QPointF correction = QPointF(start->getCorrection(), 0);
-    newLine = QLineF(start->pos() + correction, end->pos());
-  } else {
-    QPointF correction = QPointF(end->getCorrection(), 0);
-    newLine = QLineF(start->pos(), end->pos() + correction);
-  }
+  newLine = QLineF(start->pos(), end->pos());
   newLine.setLength(newLine.length() - 18);
   setLine(newLine);
   
@@ -61,17 +55,24 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
   if (line().dy() >= 0)
     angle = (Pi * 2) - angle;
 
+  qreal yDiff = end->pos().y() - start->pos().y();
+  qreal xDiff = end->pos().x() - start->pos().x();
 
-  QPointF arrowP1 = line().p2() - QPointF(sin(angle + Pi / 3) * arrowSize,
-					  cos(angle + Pi / 3) * arrowSize);
-  QPointF arrowP2 = line().p2() - QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-					  cos(angle + Pi - Pi / 3) * arrowSize);
-
-  arrowHead.clear();
-
-  arrowHead << line().p2() << arrowP1 << arrowP2;
-  painter->drawPolygon(arrowHead);
-  painter->drawLine(line());
+  qreal slope = yDiff/xDiff;
+  qreal perpendicular = -1 * (1/slope);
+  qDebug() << slope;
+  //qDebug() << perpendicular;
+  QPointF midPoint = (1-0.5) * QPointF(start->pos()) + 0.5 * QPointF(end->pos());
+  if (slope == 0) {
+    midPoint.setY(midPoint.y() + 40);
+  } else {
+    midPoint.setY(midPoint.y() - 60 * slope);
+  }
+  
+  QPainterPath myPath;
+  myPath.moveTo(start->pos());
+  myPath.quadTo(midPoint, end->pos());
+  painter->strokePath(myPath, QPen(Qt::black));
   if (isSelected()) {
     painter->setPen(QPen(color, 1, Qt::DashLine));
     QLineF myLine = line();

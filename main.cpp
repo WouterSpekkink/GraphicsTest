@@ -13,14 +13,14 @@ int main(int argc, char **argv) {
   */
   QGraphicsScene scene(-100, -100, 600, 400);
 
-  EventItem *itemOne = new EventItem(100);
+  EventItem *itemOne = new EventItem(30);
   int horPos = 1 * 35;
   itemOne->setPos(horPos, 100);
   itemOne->setOriginalPos(horPos, 100);
   scene.addItem(itemOne);
 
-  EventItem *itemTwo = new EventItem(300);
-  horPos = 5 * 35;
+  EventItem *itemTwo = new EventItem(30);
+  horPos = 10 * 35;
   itemTwo->setPos(horPos, 100);
   itemTwo->setOriginalPos(horPos, 100);
   scene.addItem(itemTwo);
@@ -31,14 +31,14 @@ int main(int argc, char **argv) {
   itemThree->setOriginalPos(horPos, 100);
   scene.addItem(itemThree);
 
-  EventItem *itemFour = new EventItem(100);
+  EventItem *itemFour = new EventItem(30);
   horPos = 1 * 35;
   itemFour->setPos(horPos, 0);
   itemFour->setOriginalPos(horPos, 0);
   scene.addItem(itemFour);
 
-  EventItem *itemFive = new EventItem(300);
-  horPos = 5 * 35;
+  EventItem *itemFive = new EventItem(30);
+  horPos = 10 * 35;
   itemFive->setPos(horPos, 0);
   itemFive->setOriginalPos(horPos, 0);
   scene.addItem(itemFive);
