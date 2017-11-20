@@ -8,7 +8,7 @@ class Arrow : public QGraphicsLineItem {
 
 public:
 
-  Arrow(EventItem *startItem, EventItem *endItem, QGraphicsItem *parent = 0);
+  Arrow(EventItem *startItem, EventItem *endItem, int submittedHeight, QGraphicsItem *parent = 0);
   ~Arrow() {};
 
   QRectF boundingRect() const override;
@@ -27,6 +27,7 @@ private:
   EventItem *end;
   QColor color;
   QPolygonF arrowHead;
+  int height;
 };
 
 #endif

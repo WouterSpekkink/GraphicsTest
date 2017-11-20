@@ -1,5 +1,6 @@
 #include <QtWidgets>
 #include "../include/EventItem.h"
+#include "../include/Arrow.h"
 
 /*
   In this case we assign a random colour. I will want to change that
@@ -13,9 +14,10 @@ EventItem::EventItem(int subWidth) : color(255, 255, 255) {
   setCursor(Qt::OpenHandCursor);
   setAcceptedMouseButtons(Qt::LeftButton);
   //  setFlag(QGraphicsItem::ItemIsSelectable);
-  setFlag(QGraphicsItem::ItemIsMovable);
+  //  setFlag(QGraphicsItem::ItemIsMovable);
   setFlag(QGraphicsItem::ItemSendsGeometryChanges);
   originalPos = QPointF(0, 0);
+  previousPos = originalPos;
 }
 
 /*
@@ -38,36 +40,63 @@ void EventItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 // Only to set the cursor to a different graphic.
-void EventItem::mousePressEvent(QGraphicsSceneMouseEvent *) {
-    setCursor(Qt::ClosedHandCursor);
+void EventItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  previousPos = event->scenePos();
+  setCursor(Qt::ClosedHandCursor);
 }
 
 void EventItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  if (event->modifiers() & Qt::AltModifier) {
-    QPointF newPos = event->scenePos();
-    this->setPos(newPos);
-    setCursor(Qt::OpenHandCursor);
-  } else {
-    qreal oldX = originalPos.x();
-    QPointF newPos = event->scenePos();
-    
-    newPos.setX(oldX);
-    this->setPos(newPos);
-    setCursor(Qt::OpenHandCursor);
+  QPointF newPos = event->scenePos();
+  qreal x = newPos.x();
+  qreal y = newPos.y();
+  bool trespass = false;
+
+  for (int i = 0; i < scene()->items().count(); i++) {
+    QGraphicsItem *item = scene()->items()[i];
+    EventItem *currentItem = qgraphicsitem_cast<EventItem*>(item);
+    Arrow *no = qgraphicsitem_cast<Arrow*>(item);
+    if (currentItem && !(no) && item != this) {
+      int dist = qSqrt(qPow(currentItem->pos().x()-x,2)+qPow(currentItem->pos().y()-y,2));
+      if (dist <= 40) {
+	trespass = true;
+      } else {
+	previousPos = this->scenePos();
+      }
+    }
   }
+  if (trespass) {
+    this->setPos(previousPos);
+  } else {
+    this->setPos(newPos);
+  }
+  setCursor(Qt::OpenHandCursor);
 }
 
 void EventItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)  {
-  if (event->modifiers() & Qt::AltModifier) {
-    QPointF newPos = event->scenePos();
-    this->setPos(newPos);
-    setCursor(Qt::OpenHandCursor);
+  QPointF newPos = event->scenePos();
+  qreal x = newPos.x();
+  qreal y = newPos.y();
+
+  bool trespass = false;
+   for (int i = 0; i < scene()->items().count(); i++) {
+    QGraphicsItem *item = scene()->items()[i];
+    EventItem *currentItem = qgraphicsitem_cast<EventItem*>(item);
+    Arrow *no = qgraphicsitem_cast<Arrow*>(item);
+    if (currentItem && !(no) && item != this) {
+      int dist = qSqrt(qPow(currentItem->pos().x()-x,2)+qPow(currentItem->pos().y()-y,2));
+      if (dist <= 40) {
+	trespass = true;
+      } else {
+	previousPos = this->scenePos();
+      }
+    }
+  }
+  if (trespass) {
+    this->setPos(previousPos);
   } else {
-    qreal oldX = originalPos.x();
-    QPointF newPos = event->scenePos();
-    newPos.setX(oldX);
     this->setPos(newPos);
   }
+  setCursor(Qt::OpenHandCursor);
   update();
   QGraphicsItem::mouseReleaseEvent(event);
 }

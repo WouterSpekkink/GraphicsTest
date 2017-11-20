@@ -28,6 +28,7 @@ private:
   QColor color;
   QPointF originalPos;
   int width;
+  QPointF previousPos;
 };
 
 #endif
