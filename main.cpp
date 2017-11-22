@@ -53,10 +53,10 @@ int main(int argc, char **argv) {
   scene.addItem(line4);
   scene.addItem(line5);
   
-  itemOne->setZValue(1);
+  /*  itemOne->setZValue(1);
   itemTwo->setZValue(1);
   itemThree->setZValue(1);
-  itemFour->setZValue(1);
+  itemFour->setZValue(1);*/
 
   QRectF currentRect = scene.itemsBoundingRect();
   currentRect.setX(currentRect.x() - 50);

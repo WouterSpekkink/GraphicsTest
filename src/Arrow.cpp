@@ -76,7 +76,6 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
   // Offset height of endPoint.
   // need to find a better solution for this.
   //  if (height == 80) {
-  endPoint.setY(endPoint.y() - 2);
   //  } else if (height == 60) {
     endPoint.setY(endPoint.y() - 6);
     //  }
@@ -95,25 +94,36 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
   theta = qRadiansToDegrees(theta);
 
   QLineF oLine = QLineF(midPoint, tempEnd);
-  if (oLine.length() <= 18) {
-    oLine = QLineF(midPoint, tempEnd);
-  }
   oLine.setLength(oLine.length() - 18);
+  QLineF sLine = QLineF(midPoint, tempStart);
+  sLine.setLength(sLine.length() - 18);
   
   double angle = ::acos(oLine.dx() / oLine.length());
   if (oLine.dy() >= 0)
     angle = (Pi * 2) - angle;
 
+  double angle2 = ::acos(sLine.dx() / sLine.length());
+  if (sLine.dy() >= 0)
+    angle2 = (Pi * 2) - angle2;
+
   qreal arrowSize = 10;
   
   QPointF arrowP1 = oLine.p2() - QPointF(sin(angle + Pi /3) * arrowSize,
-    cos(angle + Pi / 3) * arrowSize);
+					 cos(angle + Pi / 3) * arrowSize);
   QPointF arrowP2 = oLine.p2() - QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-  cos(angle + Pi - Pi / 3) * arrowSize);
+					 cos(angle + Pi - Pi / 3) * arrowSize);
+
+  QPointF arrowP3 = sLine.p2() - QPointF(sin(angle2 + Pi /3) * arrowSize,
+					 cos(angle2 + Pi / 3) * arrowSize);
+  QPointF arrowP4 = sLine.p2() - QPointF(sin(angle2 + Pi - Pi / 3) * arrowSize,
+					 cos(angle2 + Pi - Pi / 3) * arrowSize);
 
   arrowHead.clear();
   arrowHead << oLine.p2() << arrowP1 << arrowP2;
 
+  otherArrow.clear();
+  otherArrow << sLine.p2() << arrowP3 << arrowP4;
+  
   QPainterPath myPath;
   myPath.moveTo(tempStart);
   myPath.quadTo(midPoint, oLine.p2());
@@ -121,7 +131,8 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
   painter->rotate(theta);
   painter->drawPolygon(arrowHead);
   painter->strokePath(myPath, QPen(color));
-  painter->strokePath(myPath, QPen(color));
+  painter->drawPolygon(otherArrow);
+  
   if (isSelected()) {
     painter->setPen(QPen(color, 1, Qt::DashLine));
     QLineF myLine = line();

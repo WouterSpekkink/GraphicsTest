@@ -27,6 +27,7 @@ private:
   EventItem *end;
   QColor color;
   QPolygonF arrowHead;
+  QPolygonF otherArrow;
   int height;
 };
 
